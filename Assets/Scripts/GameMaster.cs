@@ -8,6 +8,7 @@ public class GameMaster : MonoBehaviour
 {
     // Start is called before the first frame update
     public static GameMaster singleton;
+    public InputSystem inputSystem;
     void Awake()
     {
         singleton = this;

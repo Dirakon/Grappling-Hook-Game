@@ -594,6 +594,7 @@ GameObject:
   - component: {fileID: 519420029}
   - component: {fileID: 519420030}
   - component: {fileID: 519420033}
+  - component: {fileID: 519420034}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -621,8 +622,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0661b340588dce718b0adaa72a1b3111, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  whoToFollow: {fileID: 1626674413440071904}
+  whoToFollow: {fileID: 1626674413440071908}
+  speed: 10
+  zoomSpeed: 5
   offset: {x: 0, y: 0, z: -10}
+  desiredSize: 10
+  camera: {fileID: 519420031}
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
@@ -650,7 +655,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 1
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -692,6 +697,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bd29ff7a7269aafbaaa2bebb66eaa01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inputSystem: {fileID: 519420034}
+--- !u!114 &519420034
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20777a3a18446db8ea360fda5750b29e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  distanceDelta: 0
+  mainTouchPosition: {x: 0, y: 0}
+  fingerPresent: 0000
 --- !u!1 &526329635
 GameObject:
   m_ObjectHideFlags: 0
@@ -3685,7 +3706,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be5d3b5ec84b5f39fae1e92e9193ade3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  whoToControl: {fileID: 1626674413440071908}
+  characterToControl: {fileID: 1626674413440071908}
+  cameraToControl: {fileID: 519420030}
 --- !u!114 &1626674413440071908
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3698,6 +3720,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9404f50de0e5747e1b8fa5158f78dbd1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentRotatingDistance: 0
+  minRotatingDistance: 1.5
   hook: {fileID: 839257372}
   rigidbody2D: {fileID: 1626674413440071909}
   layersForHook:
@@ -3705,7 +3729,9 @@ MonoBehaviour:
     m_Bits: 128
   speed: 11.25
   rotationSpeed: 1
-  hookDistance: 10.69
+  zoomSpeed: 1
+  hookDistance: 11
+  objectToRotateAround: {fileID: 0}
 --- !u!50 &1626674413440071909
 Rigidbody2D:
   serializedVersion: 4
