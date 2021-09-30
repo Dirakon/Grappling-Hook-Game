@@ -15,7 +15,7 @@ public class Player : MonoBehaviour
     {
 
     }
-    const int AWAITING_FIRST_TOUCH = 0, TRYING_TO_THROW_HOOK = 1, AWAITING_SECOND_TOUCH = 2, ZOOMING = 3, INVALID_DOUBLE_FINGER = 4;
+    const int AWAITING_FIRST_TOUCH = 0, TRYING_TO_THROW_HOOK = 1, AWAITING_SECOND_TOUCH = 2, ZOOMING = 3, WAIT_FOR_THE_SUFFERING_TO_END = 4;
     int stage = AWAITING_FIRST_TOUCH;
     // Update is called once per frame
     void Update()
@@ -36,7 +36,7 @@ public class Player : MonoBehaviour
                 }
                 else if (GameMaster.singleton.inputSystem.fingerPresent[1])
                 {
-                    stage = INVALID_DOUBLE_FINGER;
+                    stage = WAIT_FOR_THE_SUFFERING_TO_END;
                 }
                 else if (characterToControl.ThrowHook(
                     GameMaster.singleton.FindTheClosestGrabbableObstacleToThePoint(
@@ -55,6 +55,8 @@ public class Player : MonoBehaviour
                 {
                     stage = AWAITING_FIRST_TOUCH;
                     characterToControl.RealeaseHook();
+                }else if (characterToControl.objectToRotateAround == null){
+                    stage = WAIT_FOR_THE_SUFFERING_TO_END;
                 }
                 break;
             case ZOOMING:
@@ -64,7 +66,7 @@ public class Player : MonoBehaviour
                 }
                 else if (characterToControl.objectToRotateAround == null)
                 {
-                    stage = INVALID_DOUBLE_FINGER;
+                    stage = WAIT_FOR_THE_SUFFERING_TO_END;
                 }
                 else
                 {
@@ -72,7 +74,7 @@ public class Player : MonoBehaviour
                 }
 
                 break;
-            case INVALID_DOUBLE_FINGER:
+            case WAIT_FOR_THE_SUFFERING_TO_END:
                 if (!GameMaster.singleton.inputSystem.fingerPresent[0])
                 {
                     stage = AWAITING_FIRST_TOUCH;
