@@ -26,8 +26,9 @@ public class Character : MonoBehaviour
     {
 
     }
-    public void ZoomChange(float delta){
-        currentRotatingDistance = Mathf.Clamp(currentRotatingDistance+ delta*zoomSpeed*Time.deltaTime,minRotatingDistance,maxRotatingDistance);
+    public void ZoomChange(float delta)
+    {
+        currentRotatingDistance = Mathf.Clamp(currentRotatingDistance + delta * zoomSpeed * Time.deltaTime, minRotatingDistance, maxRotatingDistance);
 
     }
     void Awake()
@@ -35,37 +36,38 @@ public class Character : MonoBehaviour
         hook.SetRenderState(false);
         maxRotatingDistance = hookDistance;
     }
-    public void RealeaseHook(){
+    public void RealeaseHook()
+    {
         objectToRotateAround = null;
         hook.SetRenderState(false);
     }
-    public bool ThrowHook(Vector2 coords)
+    public bool ThrowHook(Obstacle obstacle)
     {
-        RaycastHit2D raycast = Physics2D.Raycast(transform.position, coords - (Vector2)transform.position, hookDistance, layersForHook);
-        Debug.DrawRay(transform.position, coords - (Vector2)transform.position, Color.red, 0.2f);
-        if (raycast.collider == null)
+        if (obstacle == null || !obstacle.isGrabbable)
         {
             return false;
         }
-        Obstacle obstacle = raycast.collider.GetComponent<Obstacle>();
-        if (obstacle == null || !obstacle.isGrabbable){
+        currentRotatingDistance = (transform.position - obstacle.transform.position).magnitude;
+        if (currentRotatingDistance > maxRotatingDistance)
             return false;
-        }
         hook.SetRenderState(true);
-        objectToRotateAround = raycast.collider.transform;
+        objectToRotateAround = obstacle.transform;
         hook.UpdateEndPosition(objectToRotateAround.position);
-        currentRotatingDistance = (transform.position - raycast.collider.transform.position).magnitude;
-        return true;
+        return CheckEyeContact();
     }
 
     void SetNewRight(Vector2 newRight)
     {
         transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.Cross(Vector3.forward, newRight));
     }
-
+    float curGravity = 0f;
     void TakeGravity()
     {
-        SetNewRight(Vector2.MoveTowards(transform.right, Vector2.down, Time.deltaTime * rotationSpeed).normalized);
+        curGravity += rotationSpeed;
+        SetNewRight(Vector2.MoveTowards(transform.right, Vector2.down, Time.deltaTime * curGravity).normalized);
+    }
+    void RemoveGravity(){
+        curGravity=0f;
     }
 
     void OnDrawGizmos()
@@ -88,6 +90,19 @@ public class Character : MonoBehaviour
         SetNewRight(angle1 < angle2 ? newRightUnderQuestion : -newRightUnderQuestion);
     }
 
+    bool CheckEyeContact()
+    {
+        RaycastHit2D raycast = Physics2D.Raycast(transform.position, (Vector2)objectToRotateAround.transform.position - (Vector2)transform.position,
+        hookDistance , layersForHook);
+        if (raycast.collider == null || raycast.collider.gameObject != objectToRotateAround.gameObject)
+        {
+            RealeaseHook();
+            return false;
+        }
+        return true;
+        
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -95,11 +110,14 @@ public class Character : MonoBehaviour
     }
     void FixedUpdate()
     {
-        TakeGravity();
         if (objectToRotateAround != null)
         {
+            RemoveGravity();
+            CheckEyeContact();
             RotateToBeATangentOf(objectToRotateAround.position);
             hook.UpdateEndPosition(objectToRotateAround.position);
+        }else{
+            TakeGravity();
         }
         rigidbody2D.velocity = transform.right * speed;
     }

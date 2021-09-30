@@ -9,6 +9,8 @@ public class Player : MonoBehaviour
     private Character characterToControl;
     [SerializeField]
     private CameraFollower cameraToControl;
+    [SerializeField]
+    private float maxSizeToChooseAnObstacle;
     void Start()
     {
 
@@ -36,7 +38,12 @@ public class Player : MonoBehaviour
                 {
                     stage = INVALID_DOUBLE_FINGER;
                 }
-                else if (characterToControl.ThrowHook(Camera.main.ScreenToWorldPoint(GameMaster.singleton.inputSystem.mainTouchPosition)))
+                else if (characterToControl.ThrowHook(
+                    GameMaster.singleton.FindTheClosestGrabbableObstacleToThePoint(
+                        Camera.main.ScreenToWorldPoint(GameMaster.singleton.inputSystem.mainTouchPosition)
+                            )
+                        )
+                    )
                 {
                     stage = AWAITING_SECOND_TOUCH;
                 }
@@ -55,7 +62,8 @@ public class Player : MonoBehaviour
                 {
                     stage = AWAITING_SECOND_TOUCH;
                 }
-                else if (characterToControl.objectToRotateAround == null){
+                else if (characterToControl.objectToRotateAround == null)
+                {
                     stage = INVALID_DOUBLE_FINGER;
                 }
                 else

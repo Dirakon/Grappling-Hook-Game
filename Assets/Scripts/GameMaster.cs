@@ -13,8 +13,21 @@ public class GameMaster : MonoBehaviour
     {
         singleton = this;
     }
+    public Obstacle FindTheClosestGrabbableObstacleToThePoint(Vector2 point,float maxDistance = float.MaxValue, float minDistance =-1f){
+        Obstacle obstacle=null;
+        float theValue = float.MaxValue;
+        foreach(Obstacle itObstacle in Obstacle.obstacles){
+            float value = ((Vector2)itObstacle.transform.position - point).magnitude;
+            if (value < theValue && value < maxDistance && value > minDistance){
+                theValue = value;
+                obstacle = itObstacle;
+            }
+        }
+        return obstacle;
+    }
     public void LevelRestart()
     {
+        Obstacle.obstacles = new LinkedList<Obstacle>();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex, LoadSceneMode.Single);
     }
     void Start()

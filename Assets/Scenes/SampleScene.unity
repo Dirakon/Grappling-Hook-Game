@@ -3708,6 +3708,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterToControl: {fileID: 1626674413440071908}
   cameraToControl: {fileID: 519420030}
+  maxSizeToChooseAnObstacle: 0
 --- !u!114 &1626674413440071908
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3728,7 +3729,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   speed: 11.25
-  rotationSpeed: 1
+  rotationSpeed: 0.05
   zoomSpeed: 1
   hookDistance: 11
   objectToRotateAround: {fileID: 0}
