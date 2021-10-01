@@ -6,9 +6,16 @@ public class HookVisuals : MonoBehaviour
 {
     // Start is called before the first frame update
     [SerializeField]
-    private SpriteRenderer sprite;
+    private MeshRenderer sprite;
+    [SerializeField]
+    private AudioSource hookSounds;
     public void SetRenderState(bool toWhat){
         sprite.enabled = toWhat;
+        if (sprite.enabled){
+            hookSounds.Play();
+        }else{
+            hookSounds.Stop();
+        }
     }
     public void UpdateEndPosition(Vector3 newEndPosition){
         newEndPosition.z = transform.position.z;
