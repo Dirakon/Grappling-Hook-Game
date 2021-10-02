@@ -7,7 +7,7 @@ using UnityEditor;
 public class Obstacle : MonoBehaviour
 {
     public static LinkedList<Obstacle> obstacles = new LinkedList<Obstacle>();
-    public bool isGrabbable = false;
+    public bool isGrabbable = false,allowsZoomingIn=false,allowsZoomingOut=false;
     // Start is called before the first frame update
     void Awake(){
         obstacles.AddLast(this);

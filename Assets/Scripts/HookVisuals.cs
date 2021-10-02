@@ -6,13 +6,14 @@ public class HookVisuals : MonoBehaviour
 {
     // Start is called before the first frame update
     [SerializeField]
-    private MeshRenderer sprite;
+    private MeshRenderer meshRenderer;
     [SerializeField]
     private AudioSource hookSounds;
-    public void SetRenderState(bool toWhat){
-        sprite.enabled = toWhat;
-        if (sprite.enabled){
+    public void SetRenderState(bool toWhat, Material[] colors= null){
+        meshRenderer.enabled = toWhat;
+        if (meshRenderer.enabled){
             hookSounds.Play();
+            meshRenderer.materials=new Material[]{colors[0],colors[1]};
         }else{
             hookSounds.Stop();
         }

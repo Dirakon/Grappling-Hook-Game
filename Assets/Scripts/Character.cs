@@ -20,7 +20,7 @@ public class Character : MonoBehaviour
     private float speed = 0, rotationSpeed = 0, zoomSpeed = 0;
     [SerializeField]
     private float hookDistance = 0;
-    public Transform objectToRotateAround = null;
+    public Obstacle objectToRotateAround = null;
 
     void Start()
     {
@@ -28,6 +28,10 @@ public class Character : MonoBehaviour
     }
     public void ZoomChange(float delta)
     {
+        if (delta > 0 && !objectToRotateAround.allowsZoomingOut)
+            return;
+        if (delta < 0 && !objectToRotateAround.allowsZoomingIn)
+            return;
         currentRotatingDistance = Mathf.Clamp(currentRotatingDistance + delta * zoomSpeed * Time.deltaTime, minRotatingDistance, maxRotatingDistance);
 
     }
@@ -47,15 +51,25 @@ public class Character : MonoBehaviour
         {
             return false;
         }
-        currentRotatingDistance = (transform.position - obstacle.transform.position).magnitude;
-        if (currentRotatingDistance > maxRotatingDistance)
+        Vector3 obstaclePosition = obstacle.transform.position;
+        obstaclePosition.z=transform.position.z;
+        float saveCur = currentRotatingDistance;
+        currentRotatingDistance = (transform.position - obstaclePosition).magnitude;
+        if (currentRotatingDistance > maxRotatingDistance){
+            currentRotatingDistance=saveCur;
             return false;
-        hook.SetRenderState(true);
-        objectToRotateAround = obstacle.transform;
-        hook.UpdateEndPosition(objectToRotateAround.position);
+        }
+        Material[] obstacleMaterials = obstacle.GetComponentInChildren<MeshRenderer>().materials;
+        
+        if (obstacleMaterials.Length == 4){
+            // 2 colors
+            obstacleMaterials = new Material[]{obstacleMaterials[0],obstacleMaterials[3]};
+        }
+        hook.SetRenderState(true,obstacleMaterials);
+        objectToRotateAround = obstacle;
+        hook.UpdateEndPosition(objectToRotateAround.transform.position);
         return CheckEyeContact();
     }
-
     void SetNewRight(Vector2 newRight)
     {
         transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.Cross(Vector3.forward, newRight));
@@ -81,6 +95,7 @@ public class Character : MonoBehaviour
     void RotateToBeATangentOf(Vector3 centerOfCircle)
     {
         centerOfCircle.z = transform.position.z;
+        Vector3 prevPosition = transform.position;
         transform.position = centerOfCircle + (transform.position - centerOfCircle).normalized * currentRotatingDistance;
         Vector3 newRightUnderQuestion = Vector3.Cross(Vector3.back, transform.position - centerOfCircle);
         newRightUnderQuestion.z = 0;
@@ -106,16 +121,16 @@ public class Character : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
     }
     void FixedUpdate()
     {
         if (objectToRotateAround != null)
         {
             RemoveGravity();
-            CheckEyeContact();
-            RotateToBeATangentOf(objectToRotateAround.position);
-            hook.UpdateEndPosition(objectToRotateAround.position);
+            if (!CheckEyeContact())
+                return;
+            RotateToBeATangentOf(objectToRotateAround.transform.position);
+            hook.UpdateEndPosition(objectToRotateAround.transform.position);
         }else{
             TakeGravity();
         }

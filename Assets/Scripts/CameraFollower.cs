@@ -14,6 +14,9 @@ public class CameraFollower : MonoBehaviour
     private float standartSize;
     [SerializeField] private float desiredSize = 5f;
     [SerializeField] private Camera camera;
+    public void MakeFollowX(Character x){
+        whoToFollow=x;
+    }
     // Start is called before the first frame update
     void Awake(){
         standartSize = desiredSize;
@@ -28,8 +31,10 @@ public class CameraFollower : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (whoToFollow == null)
+            return;
         Vector3 desiredPosition = (whoToFollow.objectToRotateAround == null?
-        whoToFollow.transform : whoToFollow.objectToRotateAround ).position +offset; 
+        whoToFollow.transform : whoToFollow.objectToRotateAround.transform ).position +offset; 
         float aspectRatio = Mathf.Min(Screen.width/(float)Screen.height,Screen.height/(float)Screen.width);
         desiredSize  = (whoToFollow.objectToRotateAround == null? standartSize :Mathf.Max(standartSize, whoToFollow.currentRotatingDistance*3));
         float currentSize = camera.orthographicSize*aspectRatio;

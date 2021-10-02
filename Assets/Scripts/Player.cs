@@ -8,19 +8,17 @@ public class Player : MonoBehaviour
     [SerializeField]
     private Character characterToControl;
     [SerializeField]
-    private CameraFollower cameraToControl;
-    [SerializeField]
     private float maxSizeToChooseAnObstacle;
     void Start()
     {
-
+        if (Input.touchCount != 0)
+            stage = ZOOMING;
     }
-    const int AWAITING_FIRST_TOUCH = 0, TRYING_TO_THROW_HOOK = 1, AWAITING_SECOND_TOUCH = 2, ZOOMING = 3, WAIT_FOR_THE_SUFFERING_TO_END = 4;
-    int stage = AWAITING_FIRST_TOUCH;
+    const int AWAITING_FIRST_TOUCH = 0, TRYING_TO_THROW_HOOK = 1, AWAITING_SECOND_TOUCH = 2, ZOOMING = 3, WAIT_FOR_THE_SUFFERING_TO_END = 4, JUST_SPAWNED=5, TUTORIAL_WAIT_FOR_EMPTY = 6;
+    int stage = JUST_SPAWNED;
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(stage);
         switch (stage)
         {
             case AWAITING_FIRST_TOUCH:
@@ -79,6 +77,21 @@ public class Player : MonoBehaviour
                 {
                     stage = AWAITING_FIRST_TOUCH;
                 }
+                break;
+            case JUST_SPAWNED:
+                if (GameMaster.singleton.inputSystem.fingerPresent[0]){
+                    characterToControl.RealeaseHook();
+                    stage=WAIT_FOR_THE_SUFFERING_TO_END;
+                }
+
+                break;
+            case TUTORIAL_WAIT_FOR_EMPTY:
+                Debug.Log(GameMaster.singleton.inputSystem.fingerPresent[0]);
+                if (!GameMaster.singleton.inputSystem.fingerPresent[0]){
+                    characterToControl.RealeaseHook();
+                    stage=AWAITING_FIRST_TOUCH;
+                }
+
                 break;
         }
     }
