@@ -29,10 +29,14 @@ public class GameMaster : MonoBehaviour
         }
         return obstacle;
     }
-    public void LevelRestart()
-    {
+    IEnumerator delayedRestart(float seconds){
+        yield return new WaitForSeconds(seconds);
         Obstacle.obstacles = new LinkedList<Obstacle>();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex, LoadSceneMode.Single);
+    }
+    public void LevelRestart(float seconds = 0)
+    {
+        StartCoroutine(delayedRestart(seconds));
     }
     void Start()
     {

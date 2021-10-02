@@ -17,14 +17,21 @@ public class Character : MonoBehaviour
     [SerializeField]
     private LayerMask layersForHook;
     [SerializeField]
-    private float speed = 0, rotationSpeed = 0, zoomSpeed = 0;
+    private float speed = 0, rotationSpeed = 0,gravityStrenght=0, zoomSpeed = 0;
     [SerializeField]
     private float hookDistance = 0;
+    [SerializeField]
+    private GameObject deathEffect;
     public Obstacle objectToRotateAround = null;
 
     void Start()
     {
 
+    }
+    public void Die(){
+            Instantiate(deathEffect,transform.position,Quaternion.identity);
+            GameMaster.singleton.LevelRestart(0.5f);
+            Destroy(gameObject);
     }
     public void ZoomChange(float delta)
     {
@@ -38,6 +45,7 @@ public class Character : MonoBehaviour
     void Awake()
     {
         hook.SetRenderState(false);
+        StartCoroutine(autoRotate());
         maxRotatingDistance = hookDistance;
     }
     public void RealeaseHook()
@@ -70,15 +78,22 @@ public class Character : MonoBehaviour
         hook.UpdateEndPosition(objectToRotateAround.transform.position);
         return CheckEyeContact();
     }
+    Quaternion rightGoal = Quaternion.identity;
+    IEnumerator autoRotate(){
+        while (true){
+            transform.rotation = Quaternion.RotateTowards(transform.rotation,rightGoal,Time.deltaTime*rotationSpeed);
+            yield return new WaitForFixedUpdate();
+        }
+    }
     void SetNewRight(Vector2 newRight)
     {
-        transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.Cross(Vector3.forward, newRight));
+        rightGoal = Quaternion.LookRotation(Vector3.forward, Vector3.Cross(Vector3.forward, newRight));
     }
     float curGravity = 0f;
     void TakeGravity()
     {
-        curGravity += rotationSpeed;
-        SetNewRight(Vector2.MoveTowards(transform.right, Vector2.down, Time.deltaTime * curGravity).normalized);
+        curGravity += gravityStrenght;
+        SetNewRight(Vector2.MoveTowards(rightGoal*Vector3.right, Vector2.down, Time.deltaTime * curGravity).normalized);
     }
     void RemoveGravity(){
         curGravity=0f;

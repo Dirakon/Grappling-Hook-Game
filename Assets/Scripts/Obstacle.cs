@@ -19,7 +19,7 @@ public class Obstacle : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D col){
         if (col.gameObject.tag == "Player"){
-            GameMaster.singleton.LevelRestart();
+            col.gameObject.GetComponent<Character>().Die();
         }
     }
 

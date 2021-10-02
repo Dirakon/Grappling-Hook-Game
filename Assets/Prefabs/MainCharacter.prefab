@@ -56,9 +56,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   speed: 11.25
-  rotationSpeed: 0.05
+  rotationSpeed: 250
+  gravityStrenght: 0.05
   zoomSpeed: 1
   hookDistance: 11
+  deathEffect: {fileID: 3216031148678599021, guid: a70746554a70a6799afefd74534c8efc, type: 3}
   objectToRotateAround: {fileID: 0}
 --- !u!114 &29171977145668060
 MonoBehaviour:
