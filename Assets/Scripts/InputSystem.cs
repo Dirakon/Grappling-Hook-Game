@@ -8,8 +8,16 @@ public class InputSystem : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        if (GetComponent<Tutorial>() != null)
+            ForbidInput();
     }
+    public void ForbidInput(){
+        inputForbidden=true;
+    }
+    public void UnforbidInput(){
+        inputForbidden=false;
+    }
+    public bool inputForbidden;
     public float distanceDelta = 0;
     public Vector2 mainTouchPosition;
     private float currentDistance = 0;
@@ -44,6 +52,11 @@ public class InputSystem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (inputForbidden)
+        {
+            fingerPresent[0] = fingerPresent[1] = false;
+            return;
+        }
         if (Input.touchCount == 1)
         {
             fingerPresent[0] = true;

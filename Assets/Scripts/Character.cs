@@ -90,9 +90,12 @@ public class Character : MonoBehaviour
         rightGoal = Quaternion.LookRotation(Vector3.forward, Vector3.Cross(Vector3.forward, newRight));
     }
     float curGravity = 0f;
+    public float maxGravity;
     void TakeGravity()
     {
         curGravity += gravityStrenght;
+        if (curGravity > maxGravity)
+            curGravity=maxGravity;
         SetNewRight(Vector2.MoveTowards(rightGoal*Vector3.right, Vector2.down, Time.deltaTime * curGravity).normalized);
     }
     void RemoveGravity(){

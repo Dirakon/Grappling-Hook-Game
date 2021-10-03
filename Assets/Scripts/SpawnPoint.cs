@@ -21,10 +21,14 @@ public class SpawnPoint : MonoBehaviour
         while (!character.ThrowHook(obstacle)){
             yield return new WaitForEndOfFrame();
         }
-        while (character.currentRotatingDistance <= desiredDistance && character.objectToRotateAround == obstacle){
-            character.ZoomChange(Mathf.Clamp(Time.fixedTime * spawnSpeed,-1.5f,1.5f));
+        float lastRotDist=character.currentRotatingDistance;
+        while (character.objectToRotateAround == obstacle && character.currentRotatingDistance >= lastRotDist){
+            if (character.currentRotatingDistance <= desiredDistance)
+                character.ZoomChange(Mathf.Clamp(Time.fixedTime * spawnSpeed,-1.5f,1.5f));
+            lastRotDist=character.currentRotatingDistance;
             yield return new WaitForEndOfFrame();
         }
+        GameMaster.singleton.firstInputEntered=true;
     }
     // Update is called once per frame
     void Update()

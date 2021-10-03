@@ -8,6 +8,7 @@ public class GameMaster : MonoBehaviour
 {
     // Start is called before the first frame update
     public static GameMaster singleton;
+    public bool firstInputEntered = false;
     public InputSystem inputSystem;
     [SerializeField]
     private SpawnPoint spawnPoint;
@@ -33,6 +34,17 @@ public class GameMaster : MonoBehaviour
         yield return new WaitForSeconds(seconds);
         Obstacle.obstacles = new LinkedList<Obstacle>();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex, LoadSceneMode.Single);
+    }
+    public void PauseGame ()
+    {
+        Time.timeScale = 0f;
+        AudioListener.pause = true;
+    }
+
+    public void ResumeGame ()
+    {
+        Time.timeScale = 1;
+        AudioListener.pause = false;
     }
     public void LevelRestart(float seconds = 0)
     {

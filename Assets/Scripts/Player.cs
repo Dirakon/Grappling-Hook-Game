@@ -11,7 +11,7 @@ public class Player : MonoBehaviour
     private float maxSizeToChooseAnObstacle;
     void Start()
     {
-        if (Input.touchCount != 0)
+        if (Input.touchCount != 0 && !GameMaster.singleton.inputSystem.inputForbidden)
             stage = ZOOMING;
     }
     const int AWAITING_FIRST_TOUCH = 0, TRYING_TO_THROW_HOOK = 1, AWAITING_SECOND_TOUCH = 2, ZOOMING = 3, WAIT_FOR_THE_SUFFERING_TO_END = 4, JUST_SPAWNED=5, TUTORIAL_WAIT_FOR_EMPTY = 6;

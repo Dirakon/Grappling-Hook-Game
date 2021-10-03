@@ -17,9 +17,15 @@ public class Obstacle : MonoBehaviour
         
     }
 
-    void OnCollisionEnter2D(Collision2D col){
+    public void OnCollisionEnter2D(Collision2D col){
         if (col.gameObject.tag == "Player"){
+            FinishLine finishLine = GetComponent<FinishLine>();
+            if (finishLine!=null)
+            {
+                finishLine.OnFinish();
+            }else{
             col.gameObject.GetComponent<Character>().Die();
+            }
         }
     }
 
