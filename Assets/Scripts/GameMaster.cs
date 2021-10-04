@@ -9,6 +9,7 @@ public class GameMaster : MonoBehaviour
     // Start is called before the first frame update
     public static GameMaster singleton;
     public bool firstInputEntered = false;
+    bool deathCalled = false;
     public InputSystem inputSystem;
     [SerializeField]
     private SpawnPoint spawnPoint;
@@ -48,6 +49,9 @@ public class GameMaster : MonoBehaviour
     }
     public void LevelRestart(float seconds = 0)
     {
+        if (deathCalled)
+        return;
+        deathCalled=true;
         StartCoroutine(delayedRestart(seconds));
     }
     void Start()

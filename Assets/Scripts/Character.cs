@@ -30,7 +30,8 @@ public class Character : MonoBehaviour
     }
     public void Die(){
             Instantiate(deathEffect,transform.position,Quaternion.identity);
-            GameMaster.singleton.LevelRestart(0.5f);
+            GameMaster.singleton.gameObject.GetComponent<AudioSource>().Play();
+            GameMaster.singleton.LevelRestart(0.7f);
             Destroy(gameObject);
     }
     public void ZoomChange(float delta)

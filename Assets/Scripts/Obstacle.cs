@@ -10,6 +10,9 @@ public class Obstacle : MonoBehaviour
     public bool isGrabbable = false,allowsZoomingIn=false,allowsZoomingOut=false;
     // Start is called before the first frame update
     void Awake(){
+        if (obstacles.First == null){
+            obstacles = new LinkedList<Obstacle>();
+        }
         obstacles.AddLast(this);
     }
     void Start()

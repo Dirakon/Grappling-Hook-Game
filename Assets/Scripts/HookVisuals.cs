@@ -9,20 +9,38 @@ public class HookVisuals : MonoBehaviour
     private MeshRenderer meshRenderer;
     [SerializeField]
     private AudioSource hookSounds;
+    [SerializeField]
+    private float speed;
+    IEnumerator HookAnimation( Material[] materials){
+        float t = 0;
+        meshRenderer.enabled=true;
+            meshRenderer.materials=materials;
+        while (true){
+
+            t += Time.deltaTime*speed/scaleGoal;
+            if (t > 1)
+                 t = 1;
+            transform.localScale = new Vector3(1,t*scaleGoal,1);
+            yield return null;
+        }
+    }
     public void SetRenderState(bool toWhat, Material[] colors= null){
-        meshRenderer.enabled = toWhat;
-        if (meshRenderer.enabled){
+        if (toWhat){
+            StartCoroutine(HookAnimation(new Material[]{colors[0],colors[1]}));
             hookSounds.Play();
-            meshRenderer.materials=new Material[]{colors[0],colors[1]};
         }else{
+            meshRenderer.enabled = false;
+            StopAllCoroutines();
             hookSounds.Stop();
         }
     }
+    float scaleGoal;
     public void UpdateEndPosition(Vector3 newEndPosition){
+    
         newEndPosition.z = transform.position.z;
         Vector3 difference = (newEndPosition - transform.position);
         float differenceMagnitude = difference.magnitude;
-        transform.localScale = new Vector3(1,differenceMagnitude,1);
+        scaleGoal= differenceMagnitude;
         difference.Normalize();
         transform.rotation = Quaternion.LookRotation(Vector3.back,difference);
         if ((transform.position + transform.up -newEndPosition).magnitude > differenceMagnitude){

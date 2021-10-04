@@ -161,6 +161,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   meshRenderer: {fileID: 7195415222942731457}
   hookSounds: {fileID: 1224596996137496292}
+  speed: 30
 --- !u!82 &1224596996137496292
 AudioSource:
   m_ObjectHideFlags: 0
@@ -172,10 +173,10 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 555f1ba5ec6346fb29b6bd547f054e2d, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0

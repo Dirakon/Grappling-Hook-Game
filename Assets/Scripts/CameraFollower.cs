@@ -20,7 +20,7 @@ public class CameraFollower : MonoBehaviour
     // Start is called before the first frame update
     void Awake(){
         standartSize = desiredSize;
-        float aspectRatio = Mathf.Min(Screen.width/(float)Screen.height,Screen.height/(float)Screen.width);
+        float aspectRatio = Screen.width/(float)Screen.height;
         Camera.main.orthographicSize = standartSize/aspectRatio;
     }
     void Start()
@@ -35,7 +35,7 @@ public class CameraFollower : MonoBehaviour
             return;
         Vector3 desiredPosition = (whoToFollow.objectToRotateAround == null?
         whoToFollow.transform : whoToFollow.objectToRotateAround.transform ).position +offset; 
-        float aspectRatio = Mathf.Min(Screen.width/(float)Screen.height,Screen.height/(float)Screen.width);
+        float aspectRatio = Screen.width/(float)Screen.height;
         desiredSize  = (whoToFollow.objectToRotateAround == null? standartSize :Mathf.Max(standartSize, whoToFollow.currentRotatingDistance*3));
         float currentSize = camera.orthographicSize*aspectRatio;
         float sign = Mathf.Sign(desiredSize-currentSize);
