@@ -15,7 +15,10 @@ public class CameraFollower : MonoBehaviour
     [SerializeField] private float desiredSize = 5f;
     [SerializeField] private Camera camera;
     public void MakeFollowX(Character x){
+        if (whoToFollow == null){
         whoToFollow=x;
+        transform.position = whoToFollow.transform.position+offset;
+        }
     }
     // Start is called before the first frame update
     void Awake(){
@@ -25,7 +28,6 @@ public class CameraFollower : MonoBehaviour
     }
     void Start()
     {
-        
     }
 
     // Update is called once per frame

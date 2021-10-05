@@ -2,11 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using System;
 
 [SelectionBase]
 public class Obstacle : MonoBehaviour
 {
     public static LinkedList<Obstacle> obstacles = new LinkedList<Obstacle>();
+    public Action<Character> onHookStart, onHookEnd;
+
     public bool isGrabbable = false,allowsZoomingIn=false,allowsZoomingOut=false;
     // Start is called before the first frame update
     void Awake(){
@@ -18,6 +21,14 @@ public class Obstacle : MonoBehaviour
     void Start()
     {
         
+    }
+    public void OnHookStart(Character character){
+        if (onHookStart != null)
+            onHookStart.Invoke(character);
+    }
+    public void OnHookEnd(Character character){
+        if (onHookEnd != null)
+            onHookEnd.Invoke(character);
     }
 
     public void OnCollisionEnter2D(Collision2D col){

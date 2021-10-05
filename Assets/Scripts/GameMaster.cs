@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
+using System;
 public class GameMaster : MonoBehaviour
 {
     // Start is called before the first frame update
     public static GameMaster singleton;
     public bool firstInputEntered = false;
     bool deathCalled = false;
+    public Action onSlowDeathCalled;
     public InputSystem inputSystem;
     [SerializeField]
     private SpawnPoint spawnPoint;
@@ -33,8 +34,11 @@ public class GameMaster : MonoBehaviour
     }
     IEnumerator delayedRestart(float seconds){
         yield return new WaitForSeconds(seconds);
+        StartLevel(SceneManager.GetActiveScene().name);
+    }
+    public void StartLevel(string level){
         Obstacle.obstacles = new LinkedList<Obstacle>();
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex, LoadSceneMode.Single);
+        SceneManager.LoadScene(level, LoadSceneMode.Single);
     }
     public void PauseGame ()
     {
@@ -52,11 +56,17 @@ public class GameMaster : MonoBehaviour
         if (deathCalled)
         return;
         deathCalled=true;
+        if (onSlowDeathCalled != null)
+            onSlowDeathCalled.Invoke();
         StartCoroutine(delayedRestart(seconds));
     }
+    public void SpawnHero(SpawnPoint spawnPoint){
+            spawnPoint.StartCoroutine(spawnPoint.Spawn(heroPrefab));
+    }
     void Start()
-    {
-        spawnPoint.StartCoroutine(spawnPoint.Spawn(heroPrefab));
+    {   
+        if (spawnPoint != null)
+            spawnPoint.StartCoroutine(spawnPoint.Spawn(heroPrefab));
     }
 
     // Update is called once per frame

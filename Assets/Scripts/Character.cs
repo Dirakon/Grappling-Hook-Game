@@ -51,6 +51,9 @@ public class Character : MonoBehaviour
     }
     public void RealeaseHook()
     {
+        if (objectToRotateAround != null){
+            objectToRotateAround.OnHookEnd(this);
+        }
         objectToRotateAround = null;
         hook.SetRenderState(false);
     }
@@ -77,7 +80,8 @@ public class Character : MonoBehaviour
         hook.SetRenderState(true,obstacleMaterials);
         objectToRotateAround = obstacle;
         hook.UpdateEndPosition(objectToRotateAround.transform.position);
-        return CheckEyeContact();
+        objectToRotateAround.OnHookStart(this);
+        return CheckEyeContactAndReleaseHookIfNeeded();
     }
     Quaternion rightGoal = Quaternion.identity;
     IEnumerator autoRotate(){
@@ -124,7 +128,7 @@ public class Character : MonoBehaviour
         SetNewRight(angle1 < angle2 ? newRightUnderQuestion : -newRightUnderQuestion);
     }
 
-    bool CheckEyeContact()
+    bool CheckEyeContactAndReleaseHookIfNeeded()
     {
         RaycastHit2D raycast = Physics2D.Raycast(transform.position, (Vector2)objectToRotateAround.transform.position - (Vector2)transform.position,
         hookDistance , layersForHook);
@@ -146,7 +150,7 @@ public class Character : MonoBehaviour
         if (objectToRotateAround != null)
         {
             RemoveGravity();
-            if (!CheckEyeContact())
+            if (!CheckEyeContactAndReleaseHookIfNeeded())
                 return;
             RotateToBeATangentOf(objectToRotateAround.transform.position);
             hook.UpdateEndPosition(objectToRotateAround.transform.position);

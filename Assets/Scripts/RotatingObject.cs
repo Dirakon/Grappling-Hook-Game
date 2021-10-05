@@ -2,10 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RotatingObject : MonoBehaviour
+public class RotatingObject : PartOfObstacle
 {
     // Start is called before the first frame update
-    [SerializeField] private Obstacle father;
     [SerializeField] private float rotationSpeed;
     void Start()
     {

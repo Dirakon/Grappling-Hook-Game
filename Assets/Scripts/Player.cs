@@ -12,7 +12,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         if (Input.touchCount != 0 && !GameMaster.singleton.inputSystem.inputForbidden)
-            stage = ZOOMING;
+            stage = AWAITING_SECOND_TOUCH;
     }
     const int AWAITING_FIRST_TOUCH = 0, TRYING_TO_THROW_HOOK = 1, AWAITING_SECOND_TOUCH = 2, ZOOMING = 3, WAIT_FOR_THE_SUFFERING_TO_END = 4, JUST_SPAWNED=5, TUTORIAL_WAIT_FOR_EMPTY = 6;
     int stage = JUST_SPAWNED;
@@ -79,9 +79,11 @@ public class Player : MonoBehaviour
                 }
                 break;
             case JUST_SPAWNED:
-                if (GameMaster.singleton.inputSystem.fingerPresent[0]){
-                    characterToControl.RealeaseHook();
-                    stage=WAIT_FOR_THE_SUFFERING_TO_END;
+                if (characterToControl.objectToRotateAround == null){
+                    stage = AWAITING_FIRST_TOUCH;
+                }
+                else if (GameMaster.singleton.inputSystem.fingerPresent[0]){
+                    stage=AWAITING_SECOND_TOUCH;
                 }
 
                 break;

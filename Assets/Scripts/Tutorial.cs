@@ -5,10 +5,10 @@ using UnityEngine;
 public class Tutorial : MonoBehaviour
 {
     // Start is called before the first frame update
-    [SerializeField] GameObject[] stage1, stage2, stage3;
-    [SerializeField] float secondsToWait, secondsToWait2, speedOfSlowingDown;
-    void SetStageActivness(GameObject[]stage,bool activness){
-        foreach (var obj in stage1)
+    [SerializeField] GameObject[] stage0,stage1, stage2, stage3;
+    [SerializeField] float secondsToWait0,secondsToWait, secondsToWait2, speedOfSlowingDown;
+    void SetStageActivness(GameObject[] stage,bool activness){
+        foreach (var obj in stage)
         {
             obj.SetActive(activness);
         }
@@ -31,15 +31,26 @@ public class Tutorial : MonoBehaviour
     IEnumerator WaitForTheFirstFinger(){
         while (!GameMaster.singleton.inputSystem.fingerPresent[0]) { yield return null; }
     }
-    IEnumerator TutorialStageOne()
+    IEnumerator TutorialStageZero()
     {
         GameMaster.singleton.inputSystem.ForbidInput();
-        yield return new WaitForSeconds(secondsToWait);
+        yield return new WaitForSeconds(secondsToWait0);
         yield return SlowDownAndStopTheGame();
 
         GameMaster.singleton.inputSystem.UnforbidInput();
-        SetStageActivness(stage1,true);
+        SetStageActivness(stage0,true);
         yield return WaitForTheFirstFinger();
+
+        SetStageActivness(stage0,false);
+        GameMaster.singleton.ResumeGame();
+    }
+    IEnumerator TutorialStageOne()
+    {
+        yield return new WaitForSeconds(secondsToWait);
+        yield return SlowDownAndStopTheGame();
+
+        SetStageActivness(stage1,true);
+        while (Input.touchCount!=0){yield return null;}
 
         GameMaster.singleton.inputSystem.ForbidInput();
         SetStageActivness(stage1,false);
@@ -65,6 +76,7 @@ public class Tutorial : MonoBehaviour
     }
     IEnumerator AutoTutorial()
     {
+        yield return TutorialStageZero();
         yield return TutorialStageOne();
         yield return TutorialStageTwo();
         yield return TutorialStageThree();
@@ -72,14 +84,19 @@ public class Tutorial : MonoBehaviour
     void Awake()
     {
     }
+    void HaltAll(){
+        GameMaster.singleton.ResumeGame();
+        StopAllCoroutines();
+    }
     void Start()
     {
+        GameMaster.singleton.onSlowDeathCalled+=HaltAll;
         StartCoroutine(AutoTutorial());
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        
     }
 }
