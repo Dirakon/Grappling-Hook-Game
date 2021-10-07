@@ -14,6 +14,7 @@ public class GameMaster : MonoBehaviour
     public InputSystem inputSystem;
     [SerializeField]
     private SpawnPoint spawnPoint;
+    public Action<Character> onCharacterChosen;
     [SerializeField]
     private GameObject heroPrefab;
     void Awake()

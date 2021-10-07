@@ -13,10 +13,13 @@ public class SpawnPoint : MonoBehaviour
 
     public IEnumerator Spawn(GameObject characterToSpawn)
     {
+        yield return null;
         Character character = Instantiate(characterToSpawn,transform.position+Vector3.up*startingDistance,Quaternion.identity).GetComponent<Character>();
         Player player = character.gameObject.GetComponent<Player>();
         Obstacle obstacle = gameObject.GetComponent<Obstacle>();
-        Camera.main.gameObject.GetComponent<CameraFollower>().MakeFollowX(character);
+        if (GameMaster.singleton.onCharacterChosen != null){
+            GameMaster.singleton.onCharacterChosen.Invoke(character);
+        }
         
         while (!character.ThrowHook(obstacle)){
             yield return new WaitForEndOfFrame();

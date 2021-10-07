@@ -49,7 +49,7 @@ rotatingCharacter=character;
     // Update is called once per frame
     void Update()
     {
-        if (rotatingCharacter!= null && (rotatingCharacter.transform.position - transform.position).magnitude <= distanceForActivation){
+        if (rotatingCharacter!= null && rotatingCharacter.currentRotatingDistance <= distanceForActivation){
             JumpToLevel();
         }
     }

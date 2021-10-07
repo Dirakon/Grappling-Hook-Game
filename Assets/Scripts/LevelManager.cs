@@ -22,6 +22,10 @@ public class LevelManager : MonoBehaviour
             levelNode.InitializeStatus(PlayerPrefs.HasKey(levelNode.level));
             levelNode.onLevelBeingJumped+=OnLevelBeingJumped;
         }
+        if (lastPlayedLevel == 0 && !PlayerPrefs.HasKey(levelNodesInOrder[lastPlayedLevel].level)){
+            levelNodesInOrder[lastPlayedLevel].JumpToLevel();
+            return;
+        }
         GameMaster.singleton.SpawnHero(
             levelNodesInOrder[lastPlayedLevel].spawnPoint
         );

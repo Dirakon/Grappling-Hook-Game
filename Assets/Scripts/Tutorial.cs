@@ -34,7 +34,8 @@ public class Tutorial : MonoBehaviour
     IEnumerator TutorialStageZero()
     {
         GameMaster.singleton.inputSystem.ForbidInput();
-        yield return new WaitForSeconds(secondsToWait0);
+        yield return WaitForCharacterToBeOnLeftSide();
+        yield return WaitForCharacterToBeOnRightSide();
         yield return SlowDownAndStopTheGame();
 
         GameMaster.singleton.inputSystem.UnforbidInput();
@@ -46,7 +47,8 @@ public class Tutorial : MonoBehaviour
     }
     IEnumerator TutorialStageOne()
     {
-        yield return new WaitForSeconds(secondsToWait);
+        yield return WaitForCharacterToBeOnLeftSide();
+        yield return WaitForCharacterToBeOnRightSide();
         yield return SlowDownAndStopTheGame();
 
         SetStageActivness(stage1,true);
@@ -76,13 +78,23 @@ public class Tutorial : MonoBehaviour
     }
     IEnumerator AutoTutorial()
     {
+        while (character == null){ yield return null;}
         yield return TutorialStageZero();
         yield return TutorialStageOne();
         yield return TutorialStageTwo();
         yield return TutorialStageThree();
     }
+    IEnumerator WaitForCharacterToBeOnLeftSide()
+    {
+        while (character.transform.up.x>=0){ yield return null;}
+    }
+    IEnumerator WaitForCharacterToBeOnRightSide()
+    {
+        while (character.transform.up.x<=0){yield return null;}
+    }
     void Awake()
     {
+        StartCoroutine(AutoTutorial());
     }
     void HaltAll(){
         GameMaster.singleton.ResumeGame();
@@ -90,8 +102,12 @@ public class Tutorial : MonoBehaviour
     }
     void Start()
     {
+        GameMaster.singleton.onCharacterChosen+=initCharacter;
         GameMaster.singleton.onSlowDeathCalled+=HaltAll;
-        StartCoroutine(AutoTutorial());
+    }
+    Character character;
+    void initCharacter(Character character){
+        this.character=character;
     }
 
     // Update is called once per frame

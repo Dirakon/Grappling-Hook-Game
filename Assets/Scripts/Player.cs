@@ -16,6 +16,8 @@ public class Player : MonoBehaviour
     }
     const int AWAITING_FIRST_TOUCH = 0, TRYING_TO_THROW_HOOK = 1, AWAITING_SECOND_TOUCH = 2, ZOOMING = 3, WAIT_FOR_THE_SUFFERING_TO_END = 4, JUST_SPAWNED=5, TUTORIAL_WAIT_FOR_EMPTY = 6;
     int stage = JUST_SPAWNED;
+    [SerializeField]
+    private float maxSizeOfZoom;
     // Update is called once per frame
     void Update()
     {
@@ -68,7 +70,7 @@ public class Player : MonoBehaviour
                 }
                 else
                 {
-                    characterToControl.ZoomChange(GameMaster.singleton.inputSystem.distanceDelta);
+                    characterToControl.ZoomChange(Mathf.Min(GameMaster.singleton.inputSystem.distanceDelta,maxSizeOfZoom));
                 }
 
                 break;
