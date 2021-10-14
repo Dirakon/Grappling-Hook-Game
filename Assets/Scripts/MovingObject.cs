@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class MovingObject : PartOfObstacle
 {
-    [SerializeField] private float movingSpeed;
+
+    [SerializeField] private bool startsInstantly = false;
+        [SerializeField] private float movingSpeed;
     // Start is called before the first frame update
     void Start()
     {
@@ -15,7 +17,7 @@ public class MovingObject : PartOfObstacle
     // Update is called once per frame
     void Update()
     {
-        if (!GameMaster.singleton.firstInputEntered)
+        if (!startsInstantly && !GameMaster.singleton.firstInputEntered)
             return;
         transform.position += transform.right*movingSpeed*Time.deltaTime;
     }

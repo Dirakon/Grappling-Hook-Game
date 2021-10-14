@@ -6,6 +6,7 @@ public class RotatingObject : PartOfObstacle
 {
     // Start is called before the first frame update
     [SerializeField] private float rotationSpeed;
+    [SerializeField] private bool startsInstantly = false;
     void Start()
     {
         
@@ -19,7 +20,7 @@ public class RotatingObject : PartOfObstacle
     // Update is called once per frame
     void Update()
     {
-        if (!GameMaster.singleton.firstInputEntered)
+        if (!startsInstantly && !GameMaster.singleton.firstInputEntered)
             return;
         if (father == null){
         transform.RotateAround(transform.position,Vector3.back,Time.deltaTime*rotationSpeed);

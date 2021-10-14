@@ -71,7 +71,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 799649a7f18fbb7d682a665abc252176, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  materialsForLaser:
+  - {fileID: 2100000, guid: a3f28ed3bfbedc6bbb3a3547bff58e99, type: 2}
+  - {fileID: 2100000, guid: a3f28ed3bfbedc6bbb3a3547bff58e99, type: 2}
   isGrabbable: 1
+  allowsZoomingIn: 0
+  allowsZoomingOut: 0
 --- !u!1001 &7447729183978729463
 PrefabInstance:
   m_ObjectHideFlags: 0

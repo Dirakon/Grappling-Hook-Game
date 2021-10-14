@@ -7,6 +7,7 @@ using System;
 [SelectionBase]
 public class Obstacle : MonoBehaviour
 {
+    public Material[] materialsForLaser;
     public static LinkedList<Obstacle> obstacles = new LinkedList<Obstacle>();
     public Action<Character> onHookStart, onHookEnd;
 

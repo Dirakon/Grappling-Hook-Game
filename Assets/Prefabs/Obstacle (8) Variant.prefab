@@ -67,6 +67,18 @@ PrefabInstance:
       propertyPath: allowsZoomingOut
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7447729183922504439, guid: 199f56aac83c94f099df701c5a2ddc39, type: 3}
+      propertyPath: materialsForLaser.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7447729183922504439, guid: 199f56aac83c94f099df701c5a2ddc39, type: 3}
+      propertyPath: materialsForLaser.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 27379c77cc54cc2fe8730f5ab86192f2, type: 2}
+    - target: {fileID: 7447729183922504439, guid: 199f56aac83c94f099df701c5a2ddc39, type: 3}
+      propertyPath: materialsForLaser.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: a3bb9af3a9cb693988e4516f994c413f, type: 2}
     - target: {fileID: 8113854417209275251, guid: 199f56aac83c94f099df701c5a2ddc39, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 

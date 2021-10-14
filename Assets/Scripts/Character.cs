@@ -71,12 +71,8 @@ public class Character : MonoBehaviour
             currentRotatingDistance=saveCur;
             return false;
         }
-        Material[] obstacleMaterials = obstacle.GetComponentInChildren<MeshRenderer>().materials;
+        Material[] obstacleMaterials = obstacle.materialsForLaser;
         
-        if (obstacleMaterials.Length == 4){
-            // 2 colors
-            obstacleMaterials = new Material[]{obstacleMaterials[0],obstacleMaterials[3]};
-        }
         hook.SetRenderState(true,obstacleMaterials);
         objectToRotateAround = obstacle;
         hook.UpdateEndPosition(objectToRotateAround.transform.position);
