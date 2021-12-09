@@ -1,0 +1,39 @@
+<?xml version="1.0" standalone="no" ?>
+<!DOCTYPE project PUBLIC "-//audacityproject-1.3.0//DTD//EN" "http://audacity.sourceforge.net/xml/audacityproject-1.3.0.dtd" >
+<project xmlns="http://audacity.sourceforge.net/xml/" projname="shot_data" version="1.3.0" audacityversion="2.3.3" sel0="0.0000000000" sel1="0.0000000000" vpos="0" h="0.0000000000" zoom="52.0960687184" rate="44100.0" snapto="off" selectionformat="hh:mm:ss + milliseconds" frequencyformat="Hz" bandwidthformat="octaves">
+	<tags>
+		<tag name="Software" value="LAME 3.98.2 - Metadata by Soundminer Inc. www.soundminer.com - 4.1v05"/>
+		<tag name="TITLE" value="CannonArtillery 1019_05"/>
+		<tag name="TRACKNUMBER" value="0"/>
+		<tag name="ARTIST" value="Series 1000 General"/>
+		<tag name="Subtitle" value="All Sound Effects &amp; Music are Copyright Sound Ideas - All Rights Reserved"/>
+		<tag name="Publisher" value="Sound Ideas"/>
+		<tag name="Copyright message" value="2014Series 1000 General"/>
+		<tag name="File owner" value="Series 1000 General"/>
+		<tag name="YEAR" value="2014"/>
+		<tag name="COMMENTS" value="CANNON, ARTILLERY - 105MM: MULTIPLE ROUNDS, GUN Cannons (Vintage Recording)"/>
+		<tag name="GENRE" value="CANNON, ARTILLERY"/>
+		<tag name="Length" value="15325"/>
+		<tag name="Content group description" value="Sound Ideas"/>
+	</tags>
+	<wavetrack name="13881_1459869261" isSelected="1" height="150" minimized="0" channel="0" linked="1" mute="0" solo="0" rate="44100" gain="1.0" pan="0.0" colorindex="0">
+		<waveclip offset="0.00000000" colorindex="0">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="21163">
+				<waveblock start="0">
+					<simpleblockfile filename="eff1f31c.au" len="21163" min="-0.332858" max="0.390432" rms="0.082604"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+	<wavetrack name="13881_1459869261" isSelected="1" height="150" minimized="0" channel="1" linked="0" mute="0" solo="0" rate="44100" gain="1.0" pan="0.0" colorindex="0">
+		<waveclip offset="0.00000000" colorindex="0">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="21163">
+				<waveblock start="0">
+					<simpleblockfile filename="eff1f1b5.au" len="21163" min="-0.380418" max="0.499674" rms="0.076307"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+</project>

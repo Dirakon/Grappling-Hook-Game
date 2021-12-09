@@ -56,7 +56,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   speed: 11.25
-  rotationSpeed: 250
+  rotationSpeed: 500
   gravityStrenght: 0.5
   zoomSpeed: 1
   hookDistance: 11
@@ -409,6 +409,34 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: aacf0a25a6433f5038be274965aa24e7, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: a3bb9af3a9cb693988e4516f994c413f, type: 2}
+    - target: {fileID: -7511558181221131132, guid: aacf0a25a6433f5038be274965aa24e7, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: c13a3841ceecd1c1ea2ed189b823023a, type: 2}
+    - target: {fileID: -7511558181221131132, guid: aacf0a25a6433f5038be274965aa24e7, type: 3}
+      propertyPath: m_Materials.Array.data[2]
+      value: 
+      objectReference: {fileID: 2100000, guid: 49901565121cc0bdaa29870656f82c1b, type: 2}
+    - target: {fileID: -7511558181221131132, guid: aacf0a25a6433f5038be274965aa24e7, type: 3}
+      propertyPath: m_Materials.Array.data[3]
+      value: 
+      objectReference: {fileID: 2100000, guid: a3f28ed3bfbedc6bbb3a3547bff58e99, type: 2}
+    - target: {fileID: -7511558181221131132, guid: aacf0a25a6433f5038be274965aa24e7, type: 3}
+      propertyPath: m_Materials.Array.data[4]
+      value: 
+      objectReference: {fileID: 2100000, guid: a3bb9af3a9cb693988e4516f994c413f, type: 2}
+    - target: {fileID: -7511558181221131132, guid: aacf0a25a6433f5038be274965aa24e7, type: 3}
+      propertyPath: m_Materials.Array.data[5]
+      value: 
+      objectReference: {fileID: 2100000, guid: c13a3841ceecd1c1ea2ed189b823023a, type: 2}
+    - target: {fileID: -7511558181221131132, guid: aacf0a25a6433f5038be274965aa24e7, type: 3}
+      propertyPath: m_Materials.Array.data[6]
+      value: 
+      objectReference: {fileID: 2100000, guid: 49901565121cc0bdaa29870656f82c1b, type: 2}
     - target: {fileID: 919132149155446097, guid: aacf0a25a6433f5038be274965aa24e7, type: 3}
       propertyPath: m_Name
       value: Hero

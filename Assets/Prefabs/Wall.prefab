@@ -57,7 +57,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.7, y: 1}
   m_EdgeRadius: 0
 --- !u!114 &7065255620759545102
 MonoBehaviour:
@@ -71,6 +71,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 799649a7f18fbb7d682a665abc252176, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  materialsForLaser: []
   isGrabbable: 0
   allowsZoomingIn: 0
   allowsZoomingOut: 0
@@ -133,6 +134,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 90
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 5d7d6891e79d7af6e8b26d1ada01df74, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 27379c77cc54cc2fe8730f5ab86192f2, type: 2}
+    - target: {fileID: -7511558181221131132, guid: 5d7d6891e79d7af6e8b26d1ada01df74, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: 49901565121cc0bdaa29870656f82c1b, type: 2}
     - target: {fileID: 919132149155446097, guid: 5d7d6891e79d7af6e8b26d1ada01df74, type: 3}
       propertyPath: m_Name
       value: Wall

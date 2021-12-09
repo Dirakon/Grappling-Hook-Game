@@ -73,6 +73,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   father: {fileID: 6706721974005378201}
   rotationSpeed: 15
+  startsInstantly: 0
 --- !u!1001 &1481410235563700173
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -249,6 +250,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -90
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: f03357c7d80c9b6b79e209fbdb62813b, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c13a3841ceecd1c1ea2ed189b823023a, type: 2}
     - target: {fileID: 919132149155446097, guid: f03357c7d80c9b6b79e209fbdb62813b, type: 3}
       propertyPath: m_Name
       value: enemyLaser

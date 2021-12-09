@@ -5,6 +5,7 @@ using UnityEngine;
 public class Gun : MonoBehaviour
 {
     // Start is called before the first frame update
+    [SerializeField] AudioSource bulletSound;
     [SerializeField] GameObject bullet;
     [SerializeField] Transform bulletSpawnPositionAndDirection;
     [SerializeField] float bulletSpeed,reloadTime;
@@ -16,6 +17,7 @@ public class Gun : MonoBehaviour
         
     }
     public void ShootAt(Vector3 position){
+        bulletSound.Play();
         Bullet bullet = Instantiate(this.bullet,bulletSpawnPositionAndDirection.position,Quaternion.identity).GetComponent<Bullet>();
         bullet.speed = bulletSpeed;
         bullet.direction = (position-bulletSpawnPositionAndDirection.position).normalized;
