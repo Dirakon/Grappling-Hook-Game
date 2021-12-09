@@ -6,13 +6,12 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     [SerializeField] private Gun gun;
-    [SerializeField]private GameObject deathEffect;
+    [SerializeField] private GameObject deathEffect;
     [SerializeField] private GameObject gameObjectToRotate;
-    [SerializeField] float degreesToRotate, speedToRotate, oscilationSpeed,agroZone;
+    [SerializeField] float degreesToRotate, speedToRotate, oscilationSpeed, agroZone;
     [SerializeField] private Vector3[] offsets;
     [SerializeField] private int coordinateToRotate;
 
-    // Start is called before the first frame update
     void Start()
     {
         GameMaster.singleton.onCharacterChosen += TargetChosen;
@@ -54,19 +53,20 @@ public class Enemy : MonoBehaviour
     {
         if (col.gameObject.tag == "Player")
         {
-            Instantiate(deathEffect,transform.position,Quaternion.identity);
+            Instantiate(deathEffect, transform.position, Quaternion.identity);
             Destroy(gameObject);
         }
     }
-    IEnumerator Oscilation()
+    IEnumerator Oscillation()
     {
         Vector3 original = transform.position;
         while (true)
         {
             foreach (var offset in offsets)
             {
-                while ((transform.position - (offset+original)).magnitude > 0.01f){
-                    transform.position = Vector3.MoveTowards(transform.position,(offset+original),Time.deltaTime*oscilationSpeed);
+                while ((transform.position - (offset + original)).magnitude > 0.01f)
+                {
+                    transform.position = Vector3.MoveTowards(transform.position, (offset + original), Time.deltaTime * oscilationSpeed);
                     yield return null;
                 }
             }
@@ -75,14 +75,14 @@ public class Enemy : MonoBehaviour
     IEnumerator Idle()
     {
         while (!GameMaster.singleton.firstInputEntered) { yield return null; }
-        StartCoroutine(Oscilation());
+        StartCoroutine(Oscillation());
         while (true)
         {
-            if ((transform.position-target.transform.position).magnitude > agroZone)
-                {
-                    yield return null;
-                    continue;
-                }
+            if ((transform.position - target.transform.position).magnitude > agroZone)
+            {
+                yield return null;
+                continue;
+            }
             if (isLookingLeft)
             {
                 if (target.transform.position.x > transform.position.x)
@@ -103,11 +103,5 @@ public class Enemy : MonoBehaviour
             yield return gun.Reload();
             yield return null;
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 }

@@ -5,19 +5,10 @@ using UnityEngine;
 public class PartOfObstacle : MonoBehaviour
 {
     [SerializeField] protected Obstacle father;
-    // Start is called before the first frame update
-    void Awake(){
+
+    void Awake()
+    {
         if (father == null)
             father = GetComponent<Obstacle>();
-    }
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

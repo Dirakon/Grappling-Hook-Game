@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    // Start is called before the first frame update
     [SerializeField]
     private Character characterToControl;
     [SerializeField]
@@ -14,11 +13,10 @@ public class Player : MonoBehaviour
         if (Input.touchCount != 0 && !GameMaster.singleton.inputSystem.inputForbidden)
             stage = AWAITING_SECOND_TOUCH;
     }
-    const int AWAITING_FIRST_TOUCH = 0, TRYING_TO_THROW_HOOK = 1, AWAITING_SECOND_TOUCH = 2, ZOOMING = 3, WAIT_FOR_THE_SUFFERING_TO_END = 4, JUST_SPAWNED=5, TUTORIAL_WAIT_FOR_EMPTY = 6;
+    const int AWAITING_FIRST_TOUCH = 0, TRYING_TO_THROW_HOOK = 1, AWAITING_SECOND_TOUCH = 2, ZOOMING = 3, WAIT_FOR_THE_SUFFERING_TO_END = 4, JUST_SPAWNED = 5, TUTORIAL_WAIT_FOR_EMPTY = 6;
     int stage = JUST_SPAWNED;
     [SerializeField]
     private float maxSizeOfZoom;
-    // Update is called once per frame
     void Update()
     {
         switch (stage)
@@ -55,7 +53,9 @@ public class Player : MonoBehaviour
                 {
                     stage = AWAITING_FIRST_TOUCH;
                     characterToControl.RealeaseHook();
-                }else if (characterToControl.objectToRotateAround == null){
+                }
+                else if (characterToControl.objectToRotateAround == null)
+                {
                     stage = WAIT_FOR_THE_SUFFERING_TO_END;
                 }
                 break;
@@ -70,7 +70,7 @@ public class Player : MonoBehaviour
                 }
                 else
                 {
-                    characterToControl.ZoomChange(Mathf.Min(GameMaster.singleton.inputSystem.distanceDelta,maxSizeOfZoom));
+                    characterToControl.ZoomChange(Mathf.Min(GameMaster.singleton.inputSystem.distanceDelta, maxSizeOfZoom));
                 }
 
                 break;
@@ -81,19 +81,22 @@ public class Player : MonoBehaviour
                 }
                 break;
             case JUST_SPAWNED:
-                if (characterToControl.objectToRotateAround == null){
+                if (characterToControl.objectToRotateAround == null)
+                {
                     stage = AWAITING_FIRST_TOUCH;
                 }
-                else if (GameMaster.singleton.inputSystem.fingerPresent[0]){
-                    stage=AWAITING_SECOND_TOUCH;
+                else if (GameMaster.singleton.inputSystem.fingerPresent[0])
+                {
+                    stage = AWAITING_SECOND_TOUCH;
                 }
 
                 break;
             case TUTORIAL_WAIT_FOR_EMPTY:
                 Debug.Log(GameMaster.singleton.inputSystem.fingerPresent[0]);
-                if (!GameMaster.singleton.inputSystem.fingerPresent[0]){
+                if (!GameMaster.singleton.inputSystem.fingerPresent[0])
+                {
                     characterToControl.RealeaseHook();
-                    stage=AWAITING_FIRST_TOUCH;
+                    stage = AWAITING_FIRST_TOUCH;
                 }
 
                 break;

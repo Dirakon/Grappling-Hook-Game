@@ -5,17 +5,18 @@ using UnityEngine.Events;
 
 public class InputSystem : MonoBehaviour
 {
-    // Start is called before the first frame update
     void Start()
     {
         if (GetComponent<Tutorial>() != null)
             ForbidInput();
     }
-    public void ForbidInput(){
-        inputForbidden=true;
+    public void ForbidInput()
+    {
+        inputForbidden = true;
     }
-    public void UnforbidInput(){
-        inputForbidden=false;
+    public void UnforbidInput()
+    {
+        inputForbidden = false;
     }
     public bool inputForbidden;
     public float distanceDelta = 0;
@@ -49,7 +50,6 @@ public class InputSystem : MonoBehaviour
         distanceDelta = newDistance - currentDistance;
         currentDistance = newDistance;
     }
-    // Update is called once per frame
     void Update()
     {
         if (inputForbidden)
@@ -83,7 +83,7 @@ public class InputSystem : MonoBehaviour
             Touch touch1 = Input.GetTouch(0), touch2 = Input.GetTouch(1);
             if (touch1.phase == TouchPhase.Began || touch2.phase == TouchPhase.Began)
             {
-                InitializeDeltaCounter(touch1,touch2);
+                InitializeDeltaCounter(touch1, touch2);
             }
             if (touch1.phase == TouchPhase.Ended || touch2.phase == TouchPhase.Ended ||
             touch1.phase == TouchPhase.Canceled || touch2.phase == TouchPhase.Canceled)
@@ -92,7 +92,7 @@ public class InputSystem : MonoBehaviour
             }
             else
             {
-                UpdateDelta(touch1,touch2);
+                UpdateDelta(touch1, touch2);
             }
         }
         else

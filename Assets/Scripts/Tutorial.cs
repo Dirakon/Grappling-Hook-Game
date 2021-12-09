@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class Tutorial : MonoBehaviour
 {
-    // Start is called before the first frame update
-    [SerializeField] GameObject[] stage0,stage1, stage2, stage3;
-    [SerializeField] float secondsToWait0,secondsToWait, secondsToWait2, speedOfSlowingDown;
-    void SetStageActivness(GameObject[] stage,bool activness){
+    [SerializeField] GameObject[] stage0, stage1, stage2, stage3;
+    [SerializeField] float secondsToWait0, secondsToWait, secondsToWait2, speedOfSlowingDown;
+    void SetStageActivness(GameObject[] stage, bool activness)
+    {
         foreach (var obj in stage)
         {
             obj.SetActive(activness);
@@ -28,7 +28,8 @@ public class Tutorial : MonoBehaviour
         GameMaster.singleton.PauseGame();
 
     }
-    IEnumerator WaitForTheFirstFinger(){
+    IEnumerator WaitForTheFirstFinger()
+    {
         while (!GameMaster.singleton.inputSystem.fingerPresent[0]) { yield return null; }
     }
     IEnumerator TutorialStageZero()
@@ -39,10 +40,10 @@ public class Tutorial : MonoBehaviour
         yield return SlowDownAndStopTheGame();
 
         GameMaster.singleton.inputSystem.UnforbidInput();
-        SetStageActivness(stage0,true);
+        SetStageActivness(stage0, true);
         yield return WaitForTheFirstFinger();
 
-        SetStageActivness(stage0,false);
+        SetStageActivness(stage0, false);
         GameMaster.singleton.ResumeGame();
     }
     IEnumerator TutorialStageOne()
@@ -51,11 +52,11 @@ public class Tutorial : MonoBehaviour
         yield return WaitForCharacterToBeOnRightSide();
         yield return SlowDownAndStopTheGame();
 
-        SetStageActivness(stage1,true);
-        while (Input.touchCount!=0){yield return null;}
+        SetStageActivness(stage1, true);
+        while (Input.touchCount != 0) { yield return null; }
 
         GameMaster.singleton.inputSystem.ForbidInput();
-        SetStageActivness(stage1,false);
+        SetStageActivness(stage1, false);
         GameMaster.singleton.ResumeGame();
     }
     IEnumerator TutorialStageTwo()
@@ -64,21 +65,21 @@ public class Tutorial : MonoBehaviour
         yield return SlowDownAndStopTheGame();
 
         GameMaster.singleton.inputSystem.UnforbidInput();
-        SetStageActivness(stage2,true);
+        SetStageActivness(stage2, true);
         yield return WaitForTheFirstFinger();
-        
-        SetStageActivness(stage2,false);
+
+        SetStageActivness(stage2, false);
         GameMaster.singleton.ResumeGame();
     }
     IEnumerator TutorialStageThree()
     {
-        SetStageActivness(stage3,true);
+        SetStageActivness(stage3, true);
         yield return null;
 
     }
     IEnumerator AutoTutorial()
     {
-        while (character == null){ yield return null;}
+        while (character == null) { yield return null; }
         yield return TutorialStageZero();
         yield return TutorialStageOne();
         yield return TutorialStageTwo();
@@ -86,33 +87,30 @@ public class Tutorial : MonoBehaviour
     }
     IEnumerator WaitForCharacterToBeOnLeftSide()
     {
-        while (character.transform.up.x>=0){ yield return null;}
+        while (character.transform.up.x >= 0) { yield return null; }
     }
     IEnumerator WaitForCharacterToBeOnRightSide()
     {
-        while (character.transform.up.x<=0){yield return null;}
+        while (character.transform.up.x <= 0) { yield return null; }
     }
     void Awake()
     {
         StartCoroutine(AutoTutorial());
     }
-    void HaltAll(){
+    void HaltAll()
+    {
         GameMaster.singleton.ResumeGame();
         StopAllCoroutines();
     }
     void Start()
     {
-        GameMaster.singleton.onCharacterChosen+=initCharacter;
-        GameMaster.singleton.onSlowDeathCalled+=HaltAll;
+        GameMaster.singleton.onCharacterChosen += initCharacter;
+        GameMaster.singleton.onSlowDeathCalled += HaltAll;
     }
     Character character;
-    void initCharacter(Character character){
-        this.character=character;
+    void initCharacter(Character character)
+    {
+        this.character = character;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

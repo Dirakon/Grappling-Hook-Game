@@ -5,23 +5,16 @@ using UnityEngine;
 public class BGMer : MonoBehaviour
 {
     public static BGMer singleton;
-    void Awake(){
-        if (singleton != null){
+    void Awake()
+    {
+        if (singleton != null)
+        {
             Destroy(gameObject);
-        }else{
+        }
+        else
+        {
             DontDestroyOnLoad(gameObject);
             singleton = this;
         }
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

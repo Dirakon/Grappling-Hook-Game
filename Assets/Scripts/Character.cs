@@ -5,57 +5,53 @@ using UnityEngine;
 [ExecuteInEditMode]
 public class Character : MonoBehaviour
 {
-    // Start is called before the first frame update
     public float currentRotatingDistance;
-    [SerializeField]
-    private float minRotatingDistance;
+    [SerializeField] private float minRotatingDistance;
     private float maxRotatingDistance;
-    [SerializeField]
-    private HookVisuals hook;
-    [SerializeField]
-    private Rigidbody2D rigidbody2D;
-    [SerializeField]
-    private LayerMask layersForHook;
-    [SerializeField]
-    private float speed = 0, rotationSpeed = 0,gravityStrenght=0, zoomSpeed = 0;
-    [SerializeField]
-    private float hookDistance = 0;
-    [SerializeField]
-    private GameObject deathEffect;
+    [SerializeField] private HookVisuals hookVisuals;
+    [SerializeField] private Rigidbody2D rigidbody2D;
+    [SerializeField] private LayerMask layersForHook;
+    [SerializeField] private float speed = 0, rotationSpeed = 0, gravityStrength = 0, zoomSpeed = 0;
+    [SerializeField] private float hookDistance = 0;
+    
+    [SerializeField] private GameObject deathEffect;
     public Obstacle objectToRotateAround = null;
-
-    void Start()
-    {
-
+    public bool IsRotatingAroundSomeObject(){
+        return objectToRotateAround != null;
     }
-    public void Die(){
-            Instantiate(deathEffect,transform.position,Quaternion.identity);
-            GameMaster.singleton.gameObject.GetComponent<AudioSource>().Play();
-            GameMaster.singleton.LevelRestart(0.7f);
-            Destroy(gameObject);
-    }
-    public void ZoomChange(float delta)
+    public void Die()
     {
-        if (delta > 0 && !objectToRotateAround.allowsZoomingOut)
+        Instantiate(deathEffect, transform.position, Quaternion.identity);
+        GameMaster.singleton.gameObject.GetComponent<AudioSource>().Play();
+        GameMaster.singleton.LevelRestart(0.7f);
+        Destroy(gameObject);
+    }
+    public void ZoomChange(float changeInZoom)
+    {
+        if (!IsRotatingAroundSomeObject()){
+            Debug.LogError("Trying to zoom when no object is being rotated around!");
+        }
+        if (changeInZoom > 0 && !objectToRotateAround.allowsZoomingOut)
             return;
-        if (delta < 0 && !objectToRotateAround.allowsZoomingIn)
+        if (changeInZoom < 0 && !objectToRotateAround.allowsZoomingIn)
             return;
-        currentRotatingDistance = Mathf.Clamp(currentRotatingDistance + delta * zoomSpeed * Time.deltaTime, minRotatingDistance, maxRotatingDistance);
+        currentRotatingDistance = Mathf.Clamp(currentRotatingDistance + changeInZoom * zoomSpeed * Time.deltaTime, minRotatingDistance, maxRotatingDistance);
 
     }
     void Awake()
     {
-        hook.SetRenderState(false);
+        hookVisuals.SetRenderState(false);
         StartCoroutine(autoRotate());
         maxRotatingDistance = hookDistance;
     }
     public void RealeaseHook()
     {
-        if (objectToRotateAround != null){
+        if (objectToRotateAround != null)
+        {
             objectToRotateAround.OnHookEnd(this);
         }
         objectToRotateAround = null;
-        hook.SetRenderState(false);
+        hookVisuals.SetRenderState(false);
     }
     public bool ThrowHook(Obstacle obstacle)
     {
@@ -64,25 +60,28 @@ public class Character : MonoBehaviour
             return false;
         }
         Vector3 obstaclePosition = obstacle.transform.position;
-        obstaclePosition.z=transform.position.z;
+        obstaclePosition.z = transform.position.z;
         float saveCur = currentRotatingDistance;
         currentRotatingDistance = (transform.position - obstaclePosition).magnitude;
-        if (currentRotatingDistance > maxRotatingDistance){
-            currentRotatingDistance=saveCur;
+        if (currentRotatingDistance > maxRotatingDistance)
+        {
+            currentRotatingDistance = saveCur;
             return false;
         }
         Material[] obstacleMaterials = obstacle.materialsForLaser;
-        
-        hook.SetRenderState(true,obstacleMaterials);
+
+        hookVisuals.SetRenderState(true, obstacleMaterials);
         objectToRotateAround = obstacle;
-        hook.UpdateEndPosition(objectToRotateAround.transform.position);
+        hookVisuals.UpdateEndPosition(objectToRotateAround.transform.position);
         objectToRotateAround.OnHookStart(this);
         return CheckEyeContactAndReleaseHookIfNeeded();
     }
     Quaternion rightGoal = Quaternion.identity;
-    IEnumerator autoRotate(){
-        while (true){
-            transform.rotation = Quaternion.RotateTowards(transform.rotation,rightGoal,Time.deltaTime*rotationSpeed);
+    IEnumerator autoRotate()
+    {
+        while (true)
+        {
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, rightGoal, Time.deltaTime * rotationSpeed);
             yield return new WaitForFixedUpdate();
         }
     }
@@ -94,13 +93,14 @@ public class Character : MonoBehaviour
     public float maxGravity;
     void TakeGravity()
     {
-        curGravity += gravityStrenght;
+        curGravity += gravityStrength;
         if (curGravity > maxGravity)
-            curGravity=maxGravity;
-        SetNewRight(Vector2.MoveTowards(rightGoal*Vector3.right, Vector2.down, Time.deltaTime * curGravity).normalized);
+            curGravity = maxGravity;
+        SetNewRight(Vector2.MoveTowards(rightGoal * Vector3.right, Vector2.down, Time.deltaTime * curGravity).normalized);
     }
-    void RemoveGravity(){
-        curGravity=0f;
+    void RemoveGravity()
+    {
+        curGravity = 0f;
     }
 
     void OnDrawGizmos()
@@ -127,20 +127,16 @@ public class Character : MonoBehaviour
     bool CheckEyeContactAndReleaseHookIfNeeded()
     {
         RaycastHit2D raycast = Physics2D.Raycast(transform.position, (Vector2)objectToRotateAround.transform.position - (Vector2)transform.position,
-        hookDistance , layersForHook);
+        hookDistance, layersForHook);
         if (raycast.collider == null || raycast.collider.gameObject != objectToRotateAround.gameObject)
         {
             RealeaseHook();
             return false;
         }
         return true;
-        
+
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-    }
     void FixedUpdate()
     {
         if (objectToRotateAround != null)
@@ -149,8 +145,10 @@ public class Character : MonoBehaviour
             if (!CheckEyeContactAndReleaseHookIfNeeded())
                 return;
             RotateToBeATangentOf(objectToRotateAround.transform.position);
-            hook.UpdateEndPosition(objectToRotateAround.transform.position);
-        }else{
+            hookVisuals.UpdateEndPosition(objectToRotateAround.transform.position);
+        }
+        else
+        {
             TakeGravity();
         }
         rigidbody2D.velocity = transform.right * speed;

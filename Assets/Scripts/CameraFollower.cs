@@ -1,59 +1,89 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraFollower : MonoBehaviour
 {
-
+    private const int VISIBILITY_MODIFIER_FOR_ROTATING_AROUND_OBJECTS = 2;
+    private float standartSize;
     [SerializeField]
     private Character whoToFollow;
-    [SerializeField]
-    private float speed,zoomSpeed;
-    [SerializeField]
-    private Vector3 offset;
-    private float standartSize;
+    [SerializeField] private float speed, zoomSpeed;
+    [SerializeField] private Vector3 offset;
     [SerializeField] private float desiredSize = 5f;
-    [SerializeField] private Camera camera;
-    void initCharacter(Character character){
+    [SerializeField] private new Camera camera;
+    void initCharacter(Character character)
+    {
 
-        if (whoToFollow == null){
-        whoToFollow=character;
-        transform.position = whoToFollow.transform.position+offset;
+        if (whoToFollow == null)
+        {
+            whoToFollow = character;
+            transform.position = whoToFollow.transform.position + offset;
         }
     }
 
-    // Start is called before the first frame update
-    void Awake(){
+    void Awake()
+    {
         standartSize = desiredSize;
-        float aspectRatio = Screen.width/(float)Screen.height;
-        if (aspectRatio > 1)
-            aspectRatio = 1/aspectRatio;
-        Camera.main.orthographicSize = standartSize/aspectRatio;
+        float aspectRatio = GetNormalizedAspectRatio();
+        Camera.main.orthographicSize = standartSize / aspectRatio;
     }
     void Start()
     {
-        GameMaster.singleton.onCharacterChosen+=initCharacter;
+        GameMaster.singleton.onCharacterChosen += initCharacter;
     }
-
-    // Update is called once per frame
     void Update()
     {
         if (whoToFollow == null)
             return;
-        Vector3 desiredPosition = (whoToFollow.objectToRotateAround == null?
-        whoToFollow.transform : whoToFollow.objectToRotateAround.transform ).position +offset; 
-        float aspectRatio = Screen.width/(float)Screen.height;
-        if (aspectRatio > 1)
-            aspectRatio = 1/aspectRatio;
-        desiredSize  = (whoToFollow.objectToRotateAround == null? standartSize :Mathf.Max(standartSize, whoToFollow.currentRotatingDistance*2));
-        float currentSize = camera.orthographicSize*aspectRatio;
-        float sign = Mathf.Sign(desiredSize-currentSize);
-        currentSize += Time.deltaTime*zoomSpeed*sign;
-        if (Mathf.Sign(desiredSize-currentSize) != sign){
+        MoveCloserToObjectBeingFollowed();
+        ManageZooming();
+    }
+
+    private void ManageZooming()
+    {
+        float aspectRatio = GetNormalizedAspectRatio();
+        float currentSize = camera.orthographicSize * aspectRatio;
+
+        desiredSize = GetDesiredOrthographicSize();
+        currentSize = MoveOrthographicSizeTowardsDesiredSize(currentSize);
+
+        Camera.main.orthographicSize = currentSize / aspectRatio;
+    }
+
+    private float MoveOrthographicSizeTowardsDesiredSize(float currentSize)
+    {
+        float initialSideForApproachingDesiredSizeFrom = Mathf.Sign(desiredSize - currentSize);
+        currentSize += Time.deltaTime * zoomSpeed * initialSideForApproachingDesiredSizeFrom;
+        float newSideForApproachingDesiredSizeFrom = Mathf.Sign(desiredSize - currentSize);
+        if (newSideForApproachingDesiredSizeFrom != initialSideForApproachingDesiredSizeFrom)
+        {
             // Overshot a bit
             currentSize = desiredSize;
         }
-        Camera.main.orthographicSize = currentSize /aspectRatio;
-        transform.position = Vector3.MoveTowards(transform.position,desiredPosition,Time.deltaTime*speed);
+
+        return currentSize;
+    }
+
+    private float GetDesiredOrthographicSize()
+    {
+        return whoToFollow.IsRotatingAroundSomeObject() ?
+                    Mathf.Max(standartSize, whoToFollow.currentRotatingDistance * VISIBILITY_MODIFIER_FOR_ROTATING_AROUND_OBJECTS)
+                    : standartSize;
+    }
+
+    private void MoveCloserToObjectBeingFollowed()
+    {
+        Transform objectToFocusOn = whoToFollow.IsRotatingAroundSomeObject() ?
+                    whoToFollow.transform
+                    : whoToFollow.objectToRotateAround.transform;
+        Vector3 desiredPosition = objectToFocusOn.position + offset;
+        transform.position = Vector3.MoveTowards(transform.position, desiredPosition, Time.deltaTime * speed);
+    }
+
+    private static float GetNormalizedAspectRatio()
+    {
+        float aspectRatio = Screen.width / (float)Screen.height;
+        if (aspectRatio > 1)
+            aspectRatio = 1 / aspectRatio;
+        return aspectRatio;
     }
 }
